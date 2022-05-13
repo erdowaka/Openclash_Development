@@ -1,0 +1,357 @@
+# This Config for build and sharing for anyone 
+
+---
+rule-providers:
+  RP-Direct:
+    type: file
+    behavior: classical
+    path: "./rule_provider/direct.yaml"
+  RP-Game_proxy:
+    type: file
+    behavior: classical
+    path: "./rule_provider/game_proxy.yaml"
+  RP-Game_direct:
+    type: file
+    behavior: classical
+    path: "./rule_provider/game_direct.yaml"
+  RP-Reject:
+    type: file
+    behavior: classical
+    path: "./rule_provider/reject.yaml"
+  RP-Sosmed:
+    type: file
+    behavior: classical
+    path: "./rule_provider/sosmed.yaml"
+  RP-Streaming:
+    type: file
+    behavior: classical
+    path: "./rule_provider/streaming.yaml"
+  RP-IndoTraffik: 
+    type: file
+    behavior: classical
+    path: "./rule_provider/indoTraff.yaml"
+
+proxy-providers:
+  PP-Universal:
+    type: file
+    path: "./proxy_provider/AC_Umum.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 9
+  PP-Gaming:
+    type: file
+    path: "./proxy_provider/AC_Gaming.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 9
+  PP-Sosmed:
+    type: file
+    path: "./proxy_provider/AC_Sosmed.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 9
+  PP-Streaming:
+    type: file
+    path: "./proxy_provider/AC_Streaming.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 9
+  PP-IndoTraffik: 
+    type: file
+    path: "./proxy_provider/AC_IndoTraffik.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 9
+
+proxy-groups:
+- name: PG_Universal
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - PP-Universal
+  url: http://www.gstatic.com/generate_204
+  interval: '9'
+- name: PG_Gaming
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - PP-Game_proxy
+  url: http://www.gstatic.com/generate_204
+  interval: '9'
+- name: PG_Sosmed
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - PP-Sosmed
+  url: http://www.gstatic.com/generate_204
+  interval: '9'
+- name: PG_Streaming
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - PP-Streaming
+  url: http://www.gstatic.com/generate_204
+  interval: '9'
+- name: IndoTraffik
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - PP-IndoTraffik
+  url: http://www.gstatic.com/generate_204
+  interval: '9'
+
+# This Line For Use all setting at openclash
+redir-port: 7892
+tproxy-port: 7895
+port: 7890
+socks-port: 7891
+mixed-port: 7893
+mode: rule
+log-level: silent
+allow-lan: true
+external-controller: 0.0.0.0:9090
+
+# This Line For use secret at your setting in openclash secret setting
+secret: reyre 
+bind-address: "*"
+external-ui: "/usr/share/openclash/dashboard"
+ipv6: false
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# This Line For DNS Server
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  listen: 0.0.0.0:7874
+  default-nameserver:
+  - 114.114.114.114
+  - 119.29.29.29
+  - 192.168.9.1
+  - 192.168.8.1
+  - 192.168.0.1
+  - 8.8.8.8
+  - 8.8.4.4
+  - 9.9.9.9
+  - 1.1.1.1
+  - 1.0.0.1
+  nameserver:
+  - dhcp://"eth0"
+  - 192.168.0.1
+  - 8.8.8.8
+  - 8.8.4.4
+  - https://dns.adguard.com/dns-query
+  - https://dns.google/dns-query
+  - tls://dns.adguard.com
+  - tls://dns.google
+ 
+
+  fallback:
+  - https://cloudflare-dns.com/dns-query
+  - https://dns.google/dns-query
+  - https://1.1.1.1/dns-query
+  - tls://8.8.8.8:853
+  - tls://dns.rubyfish.cn:853
+  - https://1.1.1.1/dns-query
+  fallback-filter:
+    geoip: true
+    ipcidr:
+    - 0.0.0.0/8
+    - 10.0.0.0/8
+    - 100.64.0.0/10
+    - 127.0.0.0/8
+    - 169.254.0.0/16
+    - 172.16.0.0/12
+    - 192.0.0.0/24
+    - 192.0.2.0/24
+    - 192.88.99.0/24
+    - 192.168.0.0/16
+    - 198.18.0.0/15
+    - 198.51.100.0/24
+    - 203.0.113.0/24
+    - 224.0.0.0/4
+    - 240.0.0.0/4
+    - 255.255.255.255/32
+    domain:
+    - "+.google.com"
+    - "+.google.co.id"
+    - "+.yahoo.com"
+    - "+.yahoo.co.id"
+    - "+.bing.com"
+    - "+.yandex.com"
+    - "+.apple.com"
+    - "+.konami.com"
+    - "+.garena.com"
+    - "+.garena.co.id"
+    - "+.garena.sg"
+    - "+.dota2.com"
+    - "+.mobilelegends.com"
+    - "+.pubgmobile.com"
+    - "+.krafton.com"
+    - "+.roblox.com"
+    - "+.facebook.com"
+    - "+.fbcdn.net"
+    - "+.instagram.com"
+    - "+.tiktok.com"
+    - "+.tiktokv.com"
+    - "+.tiktokcdn.com"
+    - "+.musical.ly"
+    - "+.twitter.com"
+    - "+.twimg.com"
+    - "+.whatsapp.com"
+    - "+.whatsapp.net"
+    - "+.youtube.com"
+    - "+.ytimg.com"
+    - "+.googlevideo.com"
+    - "+.netflix.com"
+    - "+.hbo.go"
+    - "+.hotstar.com"
+    - "+.disney.com"
+    - "+.speedtest.net"
+    - "+.cbn.id"
+    - "+.fast.com"
+    - "+.xl.co.id"
+    - "+.telkomsel.co.id"
+    - "+.indosat.co.id"
+    - "+.indosat.com"
+    - "+.axis.net"
+    - "+.githubusercontent.com"
+  fake-ip-filter:
+  - "+.*"
+  - "+.media.dssott.com"
+  - "*.mcdn.bilivideo.cn"
+  - ff.dorado.sdo.com
+  - "*.ff14.sdo.com"
+  - "*.ffxiv.com"
+  - "*.finalfantasyxiv.com"
+  - "*.square-enix.com"
+  - "+.nflxvideo.net"
+  - stun.l.google.com
+  - lens.l.google.com
+  - swdist.apple.com
+  - swcdn.apple.com
+  - swdownload.apple.com
+  - swquery.apple.com
+  - swscan.apple.com
+  - mesu.apple.com
+  - "*.router.asus.com"
+  - "*.linksyssmartwifi.com"
+  - "*.linksys.com"
+  - heartbeat.belkin.com
+  - "+.stun.*.*.*.*.*"
+  - "+.stun.*.*.*.*"
+  - "+.stun.*.*.*"
+  - "+.stun.*.*"
+  - stun.*.*.*
+  - stun.*.*
+  - proxy.golang.org
+  - "+.wargaming.net"
+  - "+.wowsgame.cn"
+  - "+.wggames.cn"
+  - "+.wotgame.cn"
+  - "+.battlenet.com.cn"
+  - xnotify.xboxlive.com
+  - xbox.*.microsoft.com
+  - "*.*.xboxlive.com"
+  - xbox.*.*.microsoft.com
+  - "+.stun.playstation.net"
+  - "*.n.n.srv.nintendo.net"
+  - "+.srv.nintendo.net"
+  - localhost.sec.qq.com
+  - localhost.ptlogin2.qq.com
+  - msftncsi.com
+  - msftconnecttest.com
+  - "+.msftncsi.com"
+  - "+.msftconnecttest.com"
+  - music.migu.cn
+  - "*.music.migu.cn"
+  - "*.xiami.com"
+  - amobile.music.tc.qq.com
+  - aqqmusic.tc.qq.com
+  - dl.stream.qqmusic.qq.com
+  - isure.stream.qqmusic.qq.com
+  - mobileoc.music.tc.qq.com
+  - streamoc.music.tc.qq.com
+  - "*.y.qq.com"
+  - y.qq.com
+  - joox.com
+  - api.joox.com
+  - api-jooxtt.sanook.com
+  - "*.kuwo.cn"
+  - trackercdn.kugou.com
+  - songsearch.kugou.com
+  - music.taihe.com
+  - musicapi.taihe.com
+  - "*.126.net"
+  - "*.music.163.com"
+  - music.163.com
+  - time1.cloud.tencent.com
+  - "+.pool.ntp.org"
+  - "*.ntp.org.cn"
+  - "*.time.edu.cn"
+  - ntp7.*.com
+  - ntp6.*.com
+  - ntp5.*.com
+  - ntp4.*.com
+  - ntp3.*.com
+  - ntp2.*.com
+  - ntp1.*.com
+  - ntp.*.com
+  - time7.*.com
+  - time6.*.com
+  - time5.*.com
+  - time4.*.com
+  - time3.*.com
+  - time2.*.com
+  - time1.*.com
+  - time.*.apple.com
+  - time.*.edu.cn
+  - time.*.gov
+  - time.*.com
+  - "*.home.arpa"
+  - "*.local"
+  - "*.test"
+  - "*.localhost"
+  - "*.invalid"
+  - "*.example"
+  - "*.localdomain"
+  - "*.lan"
+
+rules:
+# This Line For Reject
+- DST-PORT,7895,REJECT
+- DST-PORT,7892,REJECT
+- IP-CIDR,198.18.0.1/16,REJECT,no-resolve
+- RULE-SET,Reject,REJECT
+# This Line For Direct Rule
+- RULE-SET,RP-Game_direct,DIRECT
+- RULE-SET,Direct,DIRECT
+# This Line For Use Proxy or VPN like: Trojan,V2Ray,SS,SSH
+- RULE-SET,RP-IndoTraffik,PG_IndoTraffik
+- RULE-SET,Gaming,AC_Gaming
+- RULE-SET,RP-Sosmed,AC_Sosmed
+- RULE-SET,RP-Streaming,AC_Streaming
+- GEOIP,ID,PG_IndoTraffik
+- MATCH,GLOBAL
+
+# This Line For If you using meta option, or tun mode you must add this line
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+  - tcp://any:53
+
+interface-name: eth0

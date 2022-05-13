@@ -1,0 +1,161 @@
+# Shadowsocks Original / tanpa plugin
+- name: "shadowsocks"
+  type: ss
+  server: aaa.bbb.ccc.ddd
+  port: 34963
+  cipher: chacha20-ietf-poly1305
+  password: passwordss
+  udp: true
+# Shadowsocks dengan plugin obfs
+- name: "shadowsocks obfs"
+    type: ss
+    server: aaa.bbb.ccc.ddd
+    port: 32033
+    cipher: chacha20-ietf-poly1305
+    password: passwordss
+    plugin: obfs
+    plugin-opts:
+      mode: tls
+      host: BUG.COM
+
+# Vmess websocket dengan BUG SNI
+- name: "Vmess ws bug SNI"
+  type: vmess
+  server: aaa.bbb.ccc.ddd
+  port: 443
+  uuid: UUIDMU
+  alterId: 0
+  cipher: auto
+  udp: true
+  tls: true
+  skip-cert-verify: true
+  servername: BUGSNI.COM
+  network: ws
+  ws-opts:
+    path: /iptunnelscom
+    headers:
+      Host: BUGSNI.COM
+    max-early-data: 2048
+    early-data-header-name: Sec-WebSocket-Protocol
+
+# Vmess websocket dengan BUG CDN (bolak-balik)
+- name: "vmess ws bug CDN"
+  type: vmess
+  server: IPCDN/BUGCDN.COM
+  port: 443
+  uuid: UUIDMU
+  alterId: 0
+  cipher: auto
+  udp: true
+  tls: true
+  skip-cert-verify: false
+  servername: namadomainservermu.com
+  network: ws
+  ws-opts:
+    path: /iptunnelscom
+    headers:
+      Host: namadomainservermu.com
+    max-early-data: 2048
+    early-data-header-name: Sec-WebSocket-Protocol
+
+# Vmess gRPC bug SNI
+proxies:
+  - name: vmess grpc SNI
+    server: aaa.bbb.ccc.ddd
+    port: 443
+    type: vmess
+    uuid: UUIDMU
+    alterId: 0
+    cipher: auto
+    network: grpc
+    tls: true
+    servername: BUGSNI.COM
+    skip-cert-verify: true
+    grpc-opts:
+      grpc-service-name: grpcpath
+
+# Vmess gRPC bug CDN
+proxies:
+  - name: vmess grpc CDN
+    server: IPCDN/BUGCDN.COM
+    port: 443
+    type: vmess
+    uuid: UUIDMU
+    alterId: 0
+    cipher: auto
+    network: grpc
+    tls: true
+    servername: namadomainservermu.com
+    skip-cert-verify: false
+    grpc-opts:
+      grpc-service-name: grpcpath
+
+# Snell Server v3 (support udp)
+- name: "snell server"
+  type: snell
+  server: aaa.bbb.ccc.ddd
+  port: 33223
+  psk: password
+  version: 3
+  udp: true
+  obfs-opts:
+    mode: tls
+    host: BUGSNI.COM
+
+# Trojan-gfw bug SNI
+- name: "trojan-gfw SNI"
+  type: trojan
+  server: aaa.bbb.ccc.ddd
+  port: 443
+  password: PASSWORD
+  udp: true
+  sni: BUGSNI.COM
+  alpn:
+    - h2
+    - http/1.1
+  skip-cert-verify: true
+
+# Trojan-go websocket bug CDN
+- name: trojan ws cdn
+  server: IPCDN/BUGCDN.COM
+  port: 443
+  type: trojan
+  password: PASSWORD
+  network: ws
+  sni: namadomainservermu.com
+  skip-cert-verify: false
+  udp: true
+  ws-opts:
+    path: /iptunnelstrgo
+    headers:
+        Host: namadomainservermu.com
+
+# Trojan gRPC bug SNI
+- name: "trojan gRPC SNI"
+  type: trojan
+  server: aaa.bbb.ccc.ddd
+  port: 443
+  password: PASSWORD
+  udp: true
+  sni: BUGSNI.COM
+  alpn:
+  - h2
+  skip-cert-verify: true
+  network: grpc
+  grpc-opts:
+    grpc-service-name: iptunnelstrojangrpc
+
+# Trojan gRPC bug CDN
+- name: "trojan gRPC CDN"
+  type: trojan
+  server: IPCDN/BUGCDN.COM
+  port: 443
+  password: PASSWORD
+  udp: true
+  sni: namadomainservermu.com
+  alpn:
+  - h2
+  skip-cert-verify: false
+  network: grpc
+  grpc-opts:
+    grpc-service-name: iptunnelstrojangrpc
