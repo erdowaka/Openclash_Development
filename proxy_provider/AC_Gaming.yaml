@@ -1,0 +1,13 @@
+proxies:
+  - name: cobabiznet_trojan_grpc
+    server: v27.tiktokcdn.com
+    port: 443
+    type: trojan
+    password: 123456
+    sni: bn-id01.iptr.xyz
+    skip-cert-verify: true
+    network: grpc
+    grpc-opts:
+      grpc-mode: gun
+      grpc-service-name: trojan-grpc
+    udp: true

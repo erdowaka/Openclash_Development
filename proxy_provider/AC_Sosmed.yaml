@@ -1,0 +1,37 @@
+proxies:
+  - name: TrojanSG_trojan_grpc
+    server: v27.tiktokcdn.com
+    port: 443
+    type: trojan
+    password: biznet12
+    sni: sggs-sg01.iptr.xyz
+    skip-cert-verify: true
+    network: grpc
+    grpc-opts:
+      grpc-mode: gun
+      grpc-service-name: trojan-grpc
+    udp: true
+  - name: cobabiznet_trojan_grpc
+    server: v27.tiktokcdn.com
+    port: 443
+    type: trojan
+    password: 123456
+    sni: bn-id01.iptr.xyz
+    skip-cert-verify: true
+    network: grpc
+    grpc-opts:
+      grpc-mode: gun
+      grpc-service-name: trojan-grpc
+    udp: true
+  - name: prem-atha1
+    server: 104.18.170.91
+    port: 443
+    type: trojan
+    password: 6ef893ad-5149-423e-81fd-b5578d7dbcf3
+    sni: id-prem-atha1.kitu.xyz
+    skip-cert-verify: true
+    network: grpc
+    grpc-opts:
+      grpc-mode: gun
+      grpc-service-name: xray-trojan-grpc
+    udp: true
